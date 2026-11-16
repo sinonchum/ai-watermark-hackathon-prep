@@ -1,0 +1,28 @@
+# Packages listed in the pre-event setup notes.
+# Install PyTorch first, then the rest:
+#   pip install torch torchvision torchaudio
+#   pip install -r requirements.txt
+#
+# Also install from source (do not pip install PyPI 'binoculars';
+# that package is an unrelated binomial library):
+#   git clone https://github.com/facebookresearch/watermark-anything
+#   git clone https://github.com/YuxinWenRick/tree-ring-watermark
+#   git clone https://github.com/ahans30/Binoculars
+#   git clone https://github.com/XuandongZhao/WatermarkAttacker
+
+videoseal
+audioseal
+synthid-text
+markllm
+c2pa-python
+transformers
+accelerate
+diffusers
+timm
+scikit-image
+lpips
+opencv-python
+pandas
+fastapi
+uvicorn
+streamlit

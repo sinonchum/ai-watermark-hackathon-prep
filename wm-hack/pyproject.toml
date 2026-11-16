@@ -1,0 +1,5 @@
+[project]
+name = "wm-hack"
+version = "0.1.0"
+description = "Starter skeleton from the European AI Championship Paris watermarking prep notes."
+requires-python = ">=3.10"
