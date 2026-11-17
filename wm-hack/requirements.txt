@@ -9,6 +9,8 @@
 #   git clone https://github.com/YuxinWenRick/tree-ring-watermark
 #   git clone https://github.com/ahans30/Binoculars
 #   git clone https://github.com/XuandongZhao/WatermarkAttacker
+#   git clone https://github.com/facebookresearch/videoseal   (Pixel Seal weights, about 1.24 GB)
+#   git clone https://github.com/meghdadk/SCRUB
 
 videoseal
 audioseal
@@ -26,3 +28,8 @@ pandas
 fastapi
 uvicorn
 streamlit
+
+# Added 2026-11-17 for the organizer-recommended papers
+model-equality-testing
+bitsandbytes
+scikit-learn

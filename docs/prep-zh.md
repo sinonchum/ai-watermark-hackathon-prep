@@ -1,9 +1,10 @@
-# European AI Championship Paris 赛前准备：AI 水印
+# European AI Championship Paris 赛前准备：AI 水印、模型溯源与机器遗忘
 
-给 Simon、Chuan Li、Xuanhao Hu、Wenhan Ding 的赛前资料：技术速览、可能题型、项目方向和准备清单。正式题目要等 11/21 上午 Meta 开场才公布。
+给 Simon、Chuan Li、Xuanhao Hu、Wenhan Ding 的赛前资料：主办方推荐论文、技术速览、可能题型、项目方向和准备清单。正式题目要等 11/21 上午 Meta 开场才公布。
 
 ## 目录
 
+- [主办方邮件与推荐论文](#主办方邮件与推荐论文)
 - [已知信息](#已知信息)
 - [往届题目参考](#往届题目参考)
 - [技术速览](#技术速览)
@@ -14,7 +15,19 @@
 - [4 人分工与时间线](#4-人分工与时间线)
 - [来源](#来源)
 
-> **这是准备资料，不是官方题目。** 本页根据公开信息和往届题目推测，具体题目、评分方式和规则以主办方当天公布为准。所有链接于 2026-11-16 检查过可以打开。
+> **这是准备资料，不是官方题目。** 本页根据公开信息和往届题目推测，具体题目、评分方式和规则以主办方当天公布为准。所有链接于 2026-11-16 检查过可以打开，三篇推荐论文的代码链接于 11-17 再次核实。
+
+## 主办方邮件与推荐论文
+
+11/17 14:02（巴黎时间），CISPA 的 Adam Dziedzic 给所有参赛者发邮件：请加入 European AI Championship Discord，并建议赛前读三篇论文。完整笔记见 [papers-zh.md](papers-zh.md)。
+
+| 论文 | 一句话 | 代码 | 可能题型（推断） |
+| --- | --- | --- | --- |
+| [Pixel Seal](https://arxiv.org/abs/2512.16874)（Meta） | 只用对抗损失训练的后处理图像与视频水印，256 bit | [facebookresearch/videoseal](https://github.com/facebookresearch/videoseal)，MIT | 去水印、伪造、检测 |
+| [Model Equality Testing](https://arxiv.org/abs/2410.20247)（ICLR 2025） | 用 MMD 两样本检验判断 API 背后是不是参考模型 | `pip install model-equality-testing` | 端点审计、模型识别 |
+| [SCRUB](https://arxiv.org/abs/2302.09880)（NeurIPS 2023） | teacher-student 遗忘：forget 上远离教师，retain 上贴近教师 | [meghdadk/SCRUB](https://github.com/meghdadk/SCRUB) | 遗忘 forget set 并保持效用，或验证遗忘 |
+
+> **范围可能比「水印」更宽。** 后两篇不是水印论文，题目可能还包括模型溯源或指纹、机器遗忘。这是根据论文清单做的推断，主办方没有说明题目与论文的对应关系。
 
 ## 已知信息
 
@@ -22,7 +35,7 @@
 | --- | --- |
 | 时间 | 11/20（周五）19:00 开场见面；11/21 9:00 签到，Meta 讲题后约中午开始；11/22 中午停止开发，评委演示 |
 | 地点 | Epitech Paris，24 Rue Pasteur, Le Kremlin-Bicêtre |
-| 主题 | AI 水印：标记、检测、溯源 AI 生成内容；背景为 EU AI Act Art. 50 |
+| 主题 | 公布的主题是 AI 水印：标记、检测、溯源 AI 生成内容，背景为 EU AI Act Art. 50。11/17 推荐的论文还涉及模型等价性检验和机器遗忘 |
 | 主办 | PoC Innovation、CISPA（Adam Dziedzic）、Fraunhofer AISEC（Franziska Boenisch）；Meta 赞助 |
 | 评分形式 | 往届为 API 提交 + 隐藏测试集 + 实时排行榜；今年是否同样尚未公布 |
 
@@ -114,11 +127,27 @@ Meta 研究员可能参与出题，优先把 videoseal 和 audioseal 跑通。CC
 
 ## 可能的题型与准备
 
+以下全部为推断。结合往届题目和 11/17 推荐的论文，题目可能分布在三个方向：水印（攻击、检测）、模型溯源与等价性检验、机器遗忘，外加可能的开放构建题。
+
 ### 攻击 / 鲁棒性题
 
 1. **形式推测**：给带水印的图（或文本、音频），要求去水印或伪造水印，同时画质受约束；按残留可检测性和画质打分。
 2. **提前准备**：写好可组合的变换管线（JPEG、resize、blur、noise、VAE 重建、img2img），并提前下载 `stabilityai/sd-vae-ft-mse` 等权重。
 3. **当天策略**：先用最弱攻击提交拿到基线分，再逐步加强；本地用开源检测器做代理评估，控制提交次数。
+
+针对 Pixel Seal：论文显示它对值域变换和 JPEG 都很稳，对裁剪等几何变换也明显强于其他方法，所以单一常规变换大概率不够；可优先试 regeneration（VAE 重建、img2img）和组合攻击，并用 videoseal 仓库里的 Pixel Seal 权重做本地代理检测器。
+
+### 模型溯源 / 等价性检验题
+
+1. **形式推测**：给若干黑盒端点或文本样本，判断哪个是原始模型，哪个被量化、加水印、微调或替换；或判断文本出自哪个模型。按准确率或固定 FPR 下的检出率评分。
+2. **提前准备**：装好 model-equality-testing 并跑通 README 示例；用 vLLM 或 transformers 在一个小模型上生成 fp16、int8、nf4、KGW 水印四个版本的样本，复现一次 Hamming MMD 检验；准备字符 n-gram + 逻辑回归的归因基线。
+3. **当天策略**：先问清能否控制 prompt 和温度：能控制就按论文用固定 prompt 集、温度 1 采样；只给样本就先做 MMD 距离矩阵聚类，再做分类器。多次检验时控制 FPR（论文用 Bonferroni）。
+
+### 机器遗忘题
+
+1. **形式推测**：给预训练模型、forget set 和 retain set，限时输出遗忘后的模型；评分综合 forget 上的遗忘程度、MIA 区分度和 retain/test 准确率。
+2. **提前准备**：在 CIFAR-10 + ResNet-18 上写好 Finetune、NegGrad+、SCRUB 三个基线和基于损失的 Basic MIA 评估脚本，记录运行时间。
+3. **当天策略**：先确认评分要的是「尽量忘」（类似 RB）还是「忘到与重训一样」（类似 UP）：前者直接用 SCRUB，后者加 SCRUB+R 的回退步骤，避免 forget 误差过高被 MIA 识别。
 
 ### 检测 / 归因排行榜题
 
@@ -134,7 +163,7 @@ Meta 研究员可能参与出题，优先把 videoseal 和 audioseal 跑通。CC
 
 ## 项目方向
 
-建议：A 与 B 组合最贴合本次主题，B 的变换管线也能直接用于攻击类排行榜题。如果当天全部是排行榜题，演示方向只作为备选。
+建议（推断）：赛前不押单一方向，而是准备三套可复用的基线：B 的变换管线（水印攻击）、F 的采样加 MMD 检验（模型溯源）、G 的遗忘与 MIA 脚本（机器遗忘）。如果当天是开放构建题，A 或 F 最贴合推荐论文；如果全部是排行榜题，演示方向只作备选。
 
 ### A. Provenance Agent
 
@@ -191,6 +220,28 @@ Meta 研究员可能参与出题，优先把 videoseal 和 audioseal 跑通。CC
 | 风险 | GPU 显存与生成速度；需要提前确认所选模型许可和下载权限。 |
 | 评委关注点 | 如果当天出现文本水印检测类题目，可直接转化为排行榜方案。 |
 
+### F. LLM API 审计器（模型等价性检验）
+
+| | |
+| --- | --- |
+| 问题 | 用户通过第三方 API 调用开源模型，无法确认对方是否量化、加水印或换了模型。论文已给出检验方法和 Python 包，但缺少面向用户的工具。 |
+| 方案 | 输入一个 OpenAI 兼容端点和对应的 Hugging Face 参考模型，按用户自己的 prompt 采样，跑 Hamming MMD 检验，输出 p 值、与参考的 MMD 距离，以及与已知变体（int8、nf4、水印）的距离对比。 |
+| 技术栈 | model-equality-testing、vLLM 或 transformers、bitsandbytes、FastAPI、简单前端。 |
+| 24h 可演示 | 本地起一个小模型的 fp16、int8、带 KGW 水印三个端点，现场检验并给出判断。 |
+| 风险 | 参考样本需要 GPU 生成；论文中 fp16 与 fp32 的检验功效就较低，不能承诺检出所有改动。 |
+| 评委关注点 | 直接对应推荐论文，能把水印（作为一种分布改动）和模型溯源联系起来。这是推断。 |
+
+### G. 遗忘验证台
+
+| | |
+| --- | --- |
+| 问题 | 遗忘算法各自用不同指标，部署方难以判断「是否真的忘了」以及代价多大。 |
+| 方案 | 在同一设置下对比 Retrain、Finetune、NegGrad+、SCRUB、SCRUB+R，统一报告 forget/retain/test 准确率、Basic MIA 准确率和运行时间；可选：用两样本检验比较遗忘后模型与重训模型的输出分布。 |
+| 技术栈 | PyTorch、torchvision、SCRUB 仓库代码、scikit-learn（MIA 分类器）、Streamlit 看板。 |
+| 24h 可演示 | CIFAR-10 + ResNet-18，遗忘一个类和遗忘 100 张样本两种场景的对比表与曲线。 |
+| 风险 | 重训基线需要时间，需提前训好原模型和重训模型；论文的 LiRA 版 MIA 需要大量影子模型，24 小时内只做 Basic MIA 更现实。 |
+| 评委关注点 | 如果当天出遗忘题，评估脚本可直接复用。这是推断。 |
+
 ## 赛前环境准备
 
 - [ ] GPU：Colab、Kaggle Notebooks、Modal、HF Spaces ZeroGPU 各准备一个账号，额度以官方页面为准
@@ -199,6 +250,10 @@ Meta 研究员可能参与出题，优先把 videoseal 和 audioseal 跑通。CC
 - [ ] 提前下载模型权重，现场网络可能慢
 - [ ] 建好团队 GitHub 仓库和共享笔记，统一 Python 3.10/3.11
 - [ ] 四人确认各自技能和是否全部被录取
+- [ ] 加入主办方 Discord（11/17 邮件要求）
+- [ ] 每人至少精读一篇推荐论文，周五见面时 5 分钟讲给其他人
+- [ ] 跑通 model-equality-testing 的 README 示例
+- [ ] 在 CIFAR-10 上训好 ResNet-18 原模型，留作遗忘实验的起点
 
 以上截至 2026-11-16 均未完成。
 
@@ -220,6 +275,12 @@ python -c "import videoseal; videoseal.load('videoseal'); videoseal.load('pixels
 python -c "from audioseal import AudioSeal; AudioSeal.load_generator('audioseal_wm_16bits'); AudioSeal.load_detector('audioseal_detector_16bits')"
 huggingface-cli download stabilityai/sd-vae-ft-mse
 huggingface-cli download Qwen/Qwen2.5-1.5B-Instruct
+
+# 11/17 推荐论文相关
+pip install model-equality-testing bitsandbytes vllm scikit-learn
+git clone https://github.com/facebookresearch/videoseal   # Pixel Seal 权重约 1.24 GB
+git clone https://github.com/irenasaracay/model-equality-testing
+git clone https://github.com/meghdadk/SCRUB
 ```
 
 注意：PyPI 上的 `binoculars` 包是一个无关的二项分布库，Binoculars 检测器要从 GitHub 安装。
@@ -237,6 +298,12 @@ wm-hack/
     attacks.py     # JPEG、crop、blur、noise、VAE、img2img、paraphrase
     metrics.py     # TPR@FPR、bit acc、PSNR/SSIM/LPIPS
     features.py    # FFT、SRM 残差
+  met/             # 模型等价性检验（占位，未实现）
+    sample.py      # 从参考模型和端点采样
+    test.py        # Hamming MMD 检验与距离矩阵
+  unlearn/         # 机器遗忘（占位，未实现）
+    baselines.py   # Finetune、NegGrad+、SCRUB
+    mia.py         # Basic MIA 评估
   tasks/
     submit.py      # 排行榜提交模板（读 token 用环境变量）
     calibrate.py   # 在干净样本上定阈值
@@ -253,8 +320,9 @@ wm-hack/
 | 角色 | 负责 | 建议人选 |
 | --- | --- | --- |
 | Agent 与集成 | LLM/agent、API、端到端串联、演示 | Simon |
-| ML 主力 | 模型训练和推理、GPU 资源、排行榜主方案 | 待定（看技能） |
-| 评估与攻击 | 变换管线、指标、本地复现官方评分 | 待定 |
+| 水印攻击与检测 | 变换管线、Pixel Seal 本地检测、指标与本地复现官方评分 | 待定（看技能） |
+| 模型溯源 | 采样、MMD 检验、文本归因基线 | 待定 |
+| 机器遗忘 | 遗忘基线、MIA 评估、GPU 资源 | 待定 |
 | 产品与演示 | 前端或扩展、数据整理、pitch 与演示视频 | 待定 |
 
 队友技能目前不清楚，周五见面时按各自强项调整。排行榜题建议像往届队伍一样：一起拆题，再每人负责一题，定时同步。
@@ -274,6 +342,11 @@ wm-hack/
 ## 来源
 
 - [活动页面](https://networkinparis.com/event/evt-t7ZboosIQPBRAB2) — networkinparis.com
+- [Pixel Seal: Adversarial-only training for invisible image and video watermarking](https://arxiv.org/abs/2512.16874) — arXiv 2512.16874
+- [Model Equality Testing: Which Model Is This API Serving?](https://arxiv.org/abs/2410.20247) — arXiv 2410.20247
+- [model-equality-testing](https://github.com/irenasaracay/model-equality-testing) — github.com
+- [Towards Unbounded Machine Unlearning](https://arxiv.org/abs/2302.09880) — arXiv 2302.09880
+- [SCRUB](https://github.com/meghdadk/SCRUB) — github.com
 - [EU AI Act Article 50](https://artificialintelligenceact.eu/article/50/) — artificialintelligenceact.eu
 - [CISPA Hackathon Championship Vienna 报道](https://cispa.de/en/cispa-hackathon-championship-vienna) — cispa.de
 - [Loki 队往届 Paris 站记录](https://github.com/Loki-Hackathons/cispa) — github.com
