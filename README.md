@@ -10,9 +10,22 @@ On 17 November 2026 the organizers (CISPA) recommended three papers to all parti
 | [Model Equality Testing: Which Model Is This API Serving?](https://arxiv.org/abs/2410.20247) (ICLR 2025) | Two-sample (MMD) tests on black-box LLM API outputs | [model-equality-testing](https://github.com/irenasaracay/model-equality-testing) |
 | [Towards Unbounded Machine Unlearning](https://arxiv.org/abs/2302.09880) (SCRUB, NeurIPS 2023) | Teacher-student unlearning, evaluated with membership inference | [meghdadk/SCRUB](https://github.com/meghdadk/SCRUB) |
 
-This repository is preparation based on public information, past tasks, and these papers. It is not the official brief. The problem statements, scoring, and rules will be announced after Meta's opening talk on the morning of 21 November 2026. Links were checked on 16 November 2026; the paper code links were checked again on 17 November 2026.
+This repository is preparation based on public information, past tasks, and these papers. It is not the official brief. The problem statements, scoring, and rules are expected to be announced in the Meta and CISPA talks after the official opening at 12:00 on 21 November 2026. Links were checked on 16 November 2026; the paper code links were checked again on 17 November 2026.
 
 The notes are in Chinese, written for Simon Qin, Chuan Li, Xuanhao Hu, and Wenhan Ding. Each paper note separates what the paper states from our inference.
+
+## Schedule
+
+From the organizers' email (PoC Innovation, 18 November 2026). Times are Paris time.
+
+- Fri 20 Nov, 19:00–21:00: optional pizza and networking evening at KB2, to meet participants and find teammates.
+- Sat 21 Nov, 12:00: official opening with lunch, then talks from Meta and CISPA. The organizers ask everyone to arrive on time.
+- Sun 22 Nov, 15:00: award ceremony and end. This replaces the earlier 16:00 and 18:30 times; the Luma invite still shows 18:30.
+- Meals: Saturday lunch and dinner, Sunday breakfast and lunch.
+- Venue: Epitech, 24 Rue Pasteur, 94270 Le Kremlin-Bicêtre.
+- Discord: https://discord.gg/QEuhdAnuze
+
+Not confirmed: when hacking starts, the submission deadline, and the time and format of judging.
 
 ## Contents
 
