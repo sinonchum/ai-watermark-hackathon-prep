@@ -56,7 +56,7 @@ MMC = max(0, MCC)
 score = 0.1 * MCC_family + 0.9 * MCC_model
 ```
 
-题面同时写了 MMC = max(0, MCC)，组合公式里用的是两个 MCC。现场以评分脚本为准，不要自己把负的 MCC 先截断再加权，除非 `score_practice.py` 就是这么做的。
+题面同时写了 MMC = max(0, MCC)，组合公式里用的是两个 MCC。开幕幻灯片第 39 页写的是先截断再加权：`MCC_x = max(0, MCC)`，然后 `score = 0.1 × MCC_family + 0.9 × MCC_model`。以幻灯片为准。负的 MCC 先变成 0，再进加权。
 
 只认出家族，最多 0.1。剩下的 0.9 是家族内部把量化版本和 LoRA 版本分开，同时不要把水印或系统提示拆开。漏掉的 same 和错报的 same 都扣分。满分 1，越高越好。
 

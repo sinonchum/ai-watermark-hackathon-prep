@@ -19,16 +19,17 @@ The notes are in Chinese, written for Simon Qin, Chuan Li, Xuanhao Hu, and Wenha
 From the organizers' email (PoC Innovation, 18 November 2026). Times are Paris time.
 
 - Fri 20 Nov, 19:00–21:00: optional pizza and networking evening at KB2, to meet participants and find teammates.
-- Sat 21 Nov, 12:00: official opening with lunch, then talks from Meta and CISPA. The organizers ask everyone to arrive on time.
-- Sun 22 Nov, 15:00: award ceremony and end. This replaces the earlier 16:00 and 18:30 times; the Luma invite still shows 18:30.
+- Sat 21 Nov, 12:00: registration and lunch. 13:00: opening, keynote, tasks. 14:30: hacking starts. 17:00: dinner.
+- Sun 22 Nov, 08:00: breakfast. 12:00: hacking ends and lunch. 13:00: 6-minute talks by the top 6 teams. 14:30: awards. 15:00: end.
 - Meals: Saturday lunch and dinner, Sunday breakfast and lunch.
 - Venue: Epitech, 24 Rue Pasteur, 94270 Le Kremlin-Bicêtre.
-- Discord: https://discord.gg/QEuhdAnuze
+- Discord: https://discord.gg/urUG53tnbJ
 
-Not confirmed: when hacking starts, the submission deadline, and the time and format of judging.
+Times above are from the organizers' opening slides (21 Nov). The 18 Nov email did not confirm the start or the judging format.
 
 ## Contents
 
+- [Opening slides (Chinese)](docs/opening-slides-zh.md): schedule, Jülich setup, reservation `cispahack`; deck in [EuroAIChampionshipParis2026-11-21.pdf](docs/EuroAIChampionshipParis2026-11-21.pdf)
 - [Opening talk notes (Chinese)](docs/talk-2026-11-21-zh.md): Pierre Fernandez, 21 Nov 2026, image watermarking between research and production, and what to reuse once the tasks drop
 - [Task 1 (Chinese)](docs/tasks/task1-zh.md): localize PixelSeal, TrustMark, or StegaStamp; official brief in [Watermark_Localization.pdf](docs/tasks/Watermark_Localization.pdf)
 - [Task 2 (Chinese)](docs/tasks/task2-zh.md): which of 33 endpoints serve the same model; official brief in [Model_Equality_Testing.pdf](docs/tasks/Model_Equality_Testing.pdf)
