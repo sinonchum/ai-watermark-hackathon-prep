@@ -29,6 +29,7 @@ Not confirmed: when hacking starts, the submission deadline, and the time and fo
 
 ## Contents
 
+- [Opening talk notes (Chinese)](docs/talk-2026-11-21-zh.md): Pierre Fernandez, 21 Nov 2026, image watermarking between research and production, and what to reuse once the tasks drop
 - [Paper notes (Chinese)](docs/papers-zh.md): problem, method, evaluation, code, likely challenge format, and quick-start plan for each paper
 - [Full analysis (Chinese)](docs/prep-zh.md)
   - [主办方邮件与推荐论文](docs/prep-zh.md#主办方邮件与推荐论文)
